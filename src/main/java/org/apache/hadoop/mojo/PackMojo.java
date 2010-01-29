@@ -122,6 +122,7 @@ public class PackMojo extends AbstractMojo {
       throw new MojoExecutionException(
           "hadoopHome property needs to be set for the plugin to work");
     }
+    getLog().info("Hadoop home set to " + this.hadoopHome);
     try {
       File jarRootDir = createHadoopDeployArtifacts();
       File jarName = packToJar(jarRootDir);
