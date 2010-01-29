@@ -3,13 +3,24 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>hadoop.plugin</groupId>
+  <groupId>com.github.maven-hadoop.plugin</groupId>
   <artifactId>maven-hadoop-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>0.2.0</version>
+  <version>0.20.0</version>
   <name> Hadoop Deploy POM </name>
   <description> Deploy Hadoop POM </description>
-
+  <url>http://github.com/akkumar/maven-hadoop</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>http://github.com/akkumar/maven-hadoop.git/</url>
+  </scm>
+  
   <build>
     <plugins>
       <plugin>
