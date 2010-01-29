@@ -2,3 +2,49 @@ This is a maven plugin for Hadoop issued under Apache License.
 
 See LICENSE.txt for more details. 
 
+  Maven Plugin for Hadoop
+  
+  Copyright (C) 2010 Karthik Kumar
+ 
+Build:
+=====
+To build the plugin 
+
+$ mvn compile
+
+Installation
+============
+
+The plugin should be available in the central repository soon.
+
+    <plugin> 
+         <groupId>com.github.maven-hadoop.plugin</groupId>
+         <artifactId>maven-hadoop-plugin</artifactId>
+         <version>0.20.0</version>
+         <configuration>
+           <hadoopHome>/opt/software/hadoop</hadoopHome>
+         </configuration>
+      </plugin>
+      
+      
+Set hadoop Home as appropriate to the installation that you use. 
+
+Usage:
+=====
+* pack goal
+
+Currently a single goal is available called as pack that creates the jar file to be submitted to the hadoop job engine. 
+
+The jar contains a directory called ./lib , that contains all the dependent jars in the same. 
+The classes of the current project are also available in the same. 
+
+The jar would be created in $basedir/target/hadoop-deploy/${ant.project.name}-hdeploy.jar  . 
+
+$ mvn compile 
+
+Once created , this could be submitted to the hadoop jar engine 
+
+$ $HADOOP_HOME/bin/hadoop jar  $basedir/target/hadoop-deploy/${ant.project.name}-hdeploy.jar   toolrunner.implementing.myclassname
+
+   
+      
