@@ -3,5 +3,10 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="target/dependency/maven-plugin-api-2.0.jar"/>
+	<classpathentry kind="lib" path="target/dependency/maven-artifact-2.0.jar"/>
+	<classpathentry kind="lib" path="target/dependency/maven-core-2.0.jar"/>
+	<classpathentry kind="lib" path="target/dependency/maven-project-2.0.jar"/>
+	<classpathentry kind="lib" path="target/dependency/maven-model-2.0.jar"/>
+	<classpathentry kind="lib" path="target/dependency/commons-io-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

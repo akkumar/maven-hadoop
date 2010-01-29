@@ -6,7 +6,7 @@
   <groupId>hadoop.plugin</groupId>
   <artifactId>maven-hadoop-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <name> Hadoop Deploy POM </name>
   <description> Deploy Hadoop POM </description>
 
@@ -29,6 +29,16 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.4</version>
     </dependency>
   </dependencies>
 
