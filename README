@@ -1,5 +1,5 @@
 This is a maven plugin for Hadoop issued under Apache License. 
-
+This software comes with absolutely *NO WARRANTY* whatsoever. 
 See LICENSE.txt for more details. 
 
   Maven Plugin for Hadoop
@@ -31,6 +31,10 @@ Set hadoop Home as appropriate to the installation that you use.
 
 Usage:
 =====
+
+Warning: the project is in its pre-infancy serving a very limited purpose at the moment of packing files. 
+More use cases are planned down the pipeline.
+
 * pack goal
 
 Currently a single goal is available called as pack that creates the jar file to be submitted to the hadoop job engine. 
@@ -40,7 +44,7 @@ The classes of the current project are also available in the same.
 
 The jar would be created in $basedir/target/hadoop-deploy/${ant.project.name}-hdeploy.jar  . 
 
-$ mvn compile 
+$ mvn compile  hadoop:pack
 
 Once created , this could be submitted to the hadoop jar engine 
 
