@@ -104,11 +104,11 @@ public class PackMojo extends AbstractMojo {
   protected Build build;
 
   /**
-   * HBase Configuration properties
+   * Hadoop Configuration properties
    * 
    * @parameter
    */
-  private Properties hbaseConfiguration;
+  private Properties hadoopConfiguration;
 
   /**
    * @parameter expression="${project.build.directory}/hadoop-deploy"
