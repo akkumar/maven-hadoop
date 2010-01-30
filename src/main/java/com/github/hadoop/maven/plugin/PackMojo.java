@@ -77,9 +77,12 @@ import org.apache.maven.plugin.MojoExecutionException;
  * <code>
  * $ mvn compile hadoop:pack
  * </code>
+ * <p>
+ * Pack the dependencies of the project , along with the class files in a single
+ * jar , amenable to be submitted to a M-R instance
  * 
- * Pack the dependencies of the project , along with the class files in a single jar , amenable to be submitted to a M-R instance
  * @goal pack
+ * @execute phase="compile"
  * 
  */
 public class PackMojo extends AbstractMojo {
@@ -114,7 +117,9 @@ public class PackMojo extends AbstractMojo {
   protected File outputDirectory;
 
   /**
-   * HADOOP_HOME directory that points to the installation of the hadoop on which the job is scheduled to be run
+   * HADOOP_HOME directory that points to the installation of the hadoop on
+   * which the job is scheduled to be run
+   * 
    * @parameter
    */
   private File hadoopHome;
