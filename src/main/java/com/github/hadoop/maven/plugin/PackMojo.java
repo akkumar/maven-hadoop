@@ -65,7 +65,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  *  &lt;plugin&gt; 
  *         &lt;groupId&gt;com.github.maven-hadoop.plugin&lt;/groupId&gt;
  *         &lt;artifactId&gt;maven-hadoop-plugin&lt;/artifactId&gt;
- *         &lt;version&gt;0.2.0&lt;/version&gt;
+ *         &lt;version&gt;0.20.0&lt;/version&gt;
  *         &lt;configuration&gt;
  *           &lt;hadoopHome&gt;/opt/software/hadoop&lt;/hadoopHome&gt;
  *         &lt;/configuration&gt;
@@ -78,6 +78,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * $ mvn compile hadoop:pack
  * </code>
  * 
+ * Pack the dependencies of the project , along with the class files in a single jar , amenable to be submitted to a M-R instance
  * @goal pack
  * 
  */
@@ -113,6 +114,7 @@ public class PackMojo extends AbstractMojo {
   protected File outputDirectory;
 
   /**
+   * HADOOP_HOME directory that points to the installation of the hadoop on which the job is scheduled to be run
    * @parameter
    */
   private File hadoopHome;
