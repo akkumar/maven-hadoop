@@ -19,7 +19,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.mojo;
+package com.github.hadoop.maven.plugin;
 
 import java.io.BufferedInputStream;
 import java.io.File;
