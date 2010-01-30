@@ -2,13 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.maven-hadoop.plugin</groupId>
   <artifactId>maven-hadoop-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <version>0.20.0</version>
-  <name> Hadoop Deploy POM </name>
-  <description> Deploy Hadoop POM </description>
+  <name>Maven Plugin for Hadoop </name>
+  <description>Maven plugin for Hadoop</description>
   <url>http://github.com/akkumar/maven-hadoop</url>
   <licenses>
     <license>
@@ -18,9 +19,23 @@
     </license>
   </licenses>
   <scm>
-    <url>http://github.com/akkumar/maven-hadoop.git/</url>
+    <connection>scm:git:http://github.com/akkumar/maven-hadoop.git</connection>
+    <url>scm:git:http://github.com/akkumar/maven-hadoop.git</url>
   </scm>
-  
+  <inceptionYear>2010</inceptionYear>
+  <prerequisites>
+    <maven />
+  </prerequisites>
+  <issueManagement>
+    <url>http://github.com/akkumar/maven-hadoop/issues</url>
+  </issueManagement>
+  <mailingLists>
+    <mailingList></mailingList>
+  </mailingLists>
+  <organization>
+    <name>Maven Hadoop</name>
+    <url>http://github.com/akkumar/maven-hadoop</url>
+  </organization>
   <build>
     <plugins>
       <plugin>
@@ -33,8 +48,8 @@
         </configuration>
       </plugin>
     </plugins>
-  </build>  
-  
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -52,5 +67,18 @@
       <version>1.4</version>
     </dependency>
   </dependencies>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project> 
