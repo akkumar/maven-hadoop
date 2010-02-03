@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
@@ -38,6 +39,7 @@ import java.util.jar.Manifest;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Build;
 
@@ -86,6 +88,12 @@ import org.apache.maven.plugin.MojoExecutionException;
  * 
  */
 public class PackMojo extends AbstractMojo {
+
+  /** @component */
+  private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
+
+  /** @component */
+  private org.apache.maven.artifact.resolver.ArtifactResolver resolver;
 
   /**
    * The maven project.
@@ -136,6 +144,8 @@ public class PackMojo extends AbstractMojo {
       getLog().info("Hadoop  job jar file available at " + jarName);
     } catch (IOException e) {
       throw new IllegalStateException("Error creating output directory", e);
+    } catch (InvalidDependencyVersionException e) {
+      throw new IllegalStateException("Invalid Dependency version ", e);
     }
 
   }
@@ -145,8 +155,10 @@ public class PackMojo extends AbstractMojo {
    * 
    * @throws IOException
    * @return File that contains the root of jar file to be packed.
+   * @throws InvalidDependencyVersionException
    */
-  private File createHadoopDeployArtifacts() throws IOException {
+  private File createHadoopDeployArtifacts() throws IOException,
+      InvalidDependencyVersionException {
     FileUtils.deleteDirectory(outputDirectory);
     File rootDir = new File(outputDirectory.getAbsolutePath() + File.separator
         + "root");
@@ -213,11 +225,14 @@ public class PackMojo extends AbstractMojo {
    * Retrieve the project dependencies.
    * 
    * @return
+   * @throws InvalidDependencyVersionException
    */
   @SuppressWarnings("unchecked")
-  private List<File> getProjectDependencies() {
+  private List<File> getProjectDependencies()
+      throws InvalidDependencyVersionException {
     List<File> jarDependencies = new ArrayList<File>();
-    final Collection<Artifact> artifacts = project.getArtifacts();
+    final Set<Artifact> artifacts = project.createArtifacts(
+        this.artifactFactory, null, null);
     for (Artifact artifact : artifacts) {
       if ("jar".equals(artifact.getType())) {
         File file = artifact.getFile();
