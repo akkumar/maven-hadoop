@@ -29,6 +29,12 @@
   <issueManagement>
     <url>http://github.com/akkumar/maven-hadoop/issues</url>
   </issueManagement>
+  <developers>
+    <developer>
+      <id>kaykay</id>
+      <name>Karthik Kumar</name>
+    </developer>
+  </developers>
   <mailingLists>
     <mailingList></mailingList>
   </mailingLists>
