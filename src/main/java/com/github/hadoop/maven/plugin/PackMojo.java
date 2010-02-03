@@ -128,6 +128,7 @@ public class PackMojo extends AbstractMojo {
     getLog().info("Hadoop home set to " + this.hadoopHome);
     try {
       File jarRootDir = createHadoopDeployArtifacts();
+      //TODO: Use Artifact to write 
       File jarName = packToJar(jarRootDir);
       getLog().info("Hadoop  job jar file available at " + jarName);
     } catch (IOException e) {
