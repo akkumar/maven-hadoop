@@ -41,6 +41,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.model.Build;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -84,16 +87,11 @@ import org.apache.maven.plugin.MojoExecutionException;
  * jar , amenable to be submitted to a M-R instance
  * 
  * @goal pack
+ * @requiresDependencyResolution compile
  * @execute phase="compile"
  * 
  */
 public class PackMojo extends AbstractMojo {
-
-  /** @component */
-  private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
-
-  /** @component */
-  private org.apache.maven.artifact.resolver.ArtifactResolver resolver;
 
   /**
    * The maven project.
@@ -103,13 +101,6 @@ public class PackMojo extends AbstractMojo {
    * @readonly
    */
   protected MavenProject project;
-
-  /**
-   * @parameter expression="${project.build}"
-   * @required
-   * @readonly
-   */
-  protected Build build;
 
   /**
    * Hadoop Configuration properties
@@ -144,10 +135,7 @@ public class PackMojo extends AbstractMojo {
       getLog().info("Hadoop  job jar file available at " + jarName);
     } catch (IOException e) {
       throw new IllegalStateException("Error creating output directory", e);
-    } catch (InvalidDependencyVersionException e) {
-      throw new IllegalStateException("Invalid Dependency version ", e);
     }
-
   }
 
   /**
@@ -156,9 +144,10 @@ public class PackMojo extends AbstractMojo {
    * @throws IOException
    * @return File that contains the root of jar file to be packed.
    * @throws InvalidDependencyVersionException
+   * @throws ArtifactNotFoundException
+   * @throws ArtifactResolutionException
    */
-  private File createHadoopDeployArtifacts() throws IOException,
-      InvalidDependencyVersionException {
+  private File createHadoopDeployArtifacts() throws IOException {
     FileUtils.deleteDirectory(outputDirectory);
     File rootDir = new File(outputDirectory.getAbsolutePath() + File.separator
         + "root");
@@ -171,7 +160,7 @@ public class PackMojo extends AbstractMojo {
     File classesdir = new File(project.getBuild().getDirectory()
         + File.separator + "classes");
     FileUtils.copyDirectory(classesdir, rootDir);
-    List<File> dependencies = this.getProjectDependencies();
+    List<File> dependencies = this.getScopedDependencies("compile");
     List<File> filteredDependencies = this.filterDependencies(dependencies);
     getLog().info(
         "Dependencies of this project independent of hadoop classpath "
@@ -224,15 +213,14 @@ public class PackMojo extends AbstractMojo {
   /**
    * Retrieve the project dependencies.
    * 
+   * @param scope
+   *          Scope of the dependency to resolve to .
    * @return
-   * @throws InvalidDependencyVersionException
    */
   @SuppressWarnings("unchecked")
-  private List<File> getProjectDependencies()
-      throws InvalidDependencyVersionException {
+  private List<File> getScopedDependencies(final String scope) {
     List<File> jarDependencies = new ArrayList<File>();
-    final Set<Artifact> artifacts = project.createArtifacts(
-        this.artifactFactory, null, null);
+    final Set<Artifact> artifacts = project.getDependencyArtifacts();
     for (Artifact artifact : artifacts) {
       if ("jar".equals(artifact.getType())) {
         File file = artifact.getFile();
