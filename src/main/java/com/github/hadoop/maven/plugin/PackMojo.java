@@ -21,9 +21,7 @@
  */
 package com.github.hadoop.maven.plugin;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,22 +30,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.artifact.InvalidDependencyVersionException;
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.model.Build;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 
 /**
  * Pack the dependencies into an archive to be fed to the hadoop jar command.
@@ -122,6 +114,11 @@ public class PackMojo extends AbstractMojo {
    * @parameter
    */
   private File hadoopHome;
+
+  /**
+   * Writes jar files.
+   */
+  private JarWriter jarWriter = new JarWriter();
 
   public void execute() throws MojoExecutionException {
     if (this.hadoopHome == null) {
@@ -234,58 +231,18 @@ public class PackMojo extends AbstractMojo {
     return jarDependencies;
   }
 
-  private File packToJar(File jarRootDir) throws FileNotFoundException,
+  private File packToJar(final File jarRootDir) throws FileNotFoundException,
       IOException {
-    Manifest manifest = new Manifest();
-    manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
     File jarName = new File(this.outputDirectory.getAbsolutePath()
         + File.separator + this.project.getArtifactId() + "-hdeploy.jar");
-    JarOutputStream target = new JarOutputStream(new FileOutputStream(jarName),
-        manifest);
-    for (File nestedFile : jarRootDir.listFiles())
-      add(jarRootDir.getPath().replace("\\", "/"), nestedFile, target);
-    target.close();
-    return jarName;
-  }
-
-  private void add(String prefix, File source, JarOutputStream target)
-      throws IOException {
-    BufferedInputStream in = null;
+    FileOutputStream fos = null;
     try {
-      if (source.isDirectory()) {
-        String name = source.getPath().replace("\\", "/");
-        if (!name.isEmpty()) {
-          if (!name.endsWith("/"))
-            name += "/";
-          JarEntry entry = new JarEntry(name.substring(prefix.length() + 1));
-          entry.setTime(source.lastModified());
-          target.putNextEntry(entry);
-          target.closeEntry();
-        }
-        for (File nestedFile : source.listFiles())
-          add(prefix, nestedFile, target);
-        return;
-      }
-
-      String jarentryName = source.getPath().replace("\\", "/").substring(
-          prefix.length() + 1);
-      JarEntry entry = new JarEntry(jarentryName);
-      entry.setTime(source.lastModified());
-      target.putNextEntry(entry);
-      in = new BufferedInputStream(new FileInputStream(source));
-
-      byte[] buffer = new byte[1024];
-      while (true) {
-        int count = in.read(buffer);
-        if (count == -1)
-          break;
-        target.write(buffer, 0, count);
-      }
-      target.closeEntry();
+      fos = new FileOutputStream(jarName);
+      this.jarWriter.packToJar(jarRootDir, fos);
+      return jarName;
     } finally {
-      if (in != null)
-        in.close();
+      IOUtils.closeQuietly(fos);
     }
-  }
 
+  }
 }
