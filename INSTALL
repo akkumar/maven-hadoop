@@ -1,0 +1,20 @@
+Maven Plugin for Hadoop
+-------------------------
+http://maven-hadoop.blogspot.com . 
+
+  
+Copyright (C) 2010 Karthik Kumar
+
+
+
+This is a maven plugin for Hadoop issued under Apache License. 
+This software comes with absolutely *NO WARRANTY* whatsoever. 
+See LICENSE.txt for more details. 
+
+
+Installation:
+---------------
+
+$ mvn install 
+
+to install the plugin to home directory 
