@@ -128,9 +128,13 @@ public class PackMojo extends AbstractMojo {
     getLog().info("Hadoop home set to " + this.hadoopHome);
     try {
       File jarRootDir = createHadoopDeployArtifacts();
-      //TODO: Use Artifact to write 
+      // TODO: Use Artifact to write
       File jarName = packToJar(jarRootDir);
       getLog().info("Hadoop  job jar file available at " + jarName);
+      getLog().info("Job ready to be executed by M-R as below : ");
+      getLog().info(
+          hadoopHome + "/bin/hadoop jar  " + jarName
+              + "  <job.launching.mainClass> ");
     } catch (IOException e) {
       throw new IllegalStateException("Error creating output directory", e);
     }
@@ -160,9 +164,11 @@ public class PackMojo extends AbstractMojo {
     FileUtils.copyDirectory(classesdir, rootDir);
     List<File> dependencies = this.getScopedDependencies("compile");
     List<File> filteredDependencies = this.filterDependencies(dependencies);
+    getLog().info("");
     getLog().info(
         "Dependencies of this project independent of hadoop classpath "
             + filteredDependencies);
+    getLog().info("");
     for (File dependency : filteredDependencies) {
       FileUtils.copyFileToDirectory(dependency, jarlibdir);
     }
