@@ -23,6 +23,7 @@
   </properties>
   <scm>
     <connection>scm:git:git://github.com/akkumar/maven-hadoop.git</connection>
+    <developerConnection>scm:git:git@github.com:akkumar/maven-hadoop.git</developerConnection>
     <url>http://github.com/akkumar/maven-hadoop/tree/master</url>
   </scm>
   <inceptionYear>2010</inceptionYear>
