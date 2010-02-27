@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -116,6 +117,12 @@ public class PackMojo extends AbstractMojo {
   private File hadoopHome;
 
   /**
+   * @parameter expression="${project.artifacts}"
+   * @required
+   */
+  private Set artifacts;
+
+  /**
    * Writes jar files.
    */
   private JarWriter jarWriter = new JarWriter();
@@ -162,15 +169,14 @@ public class PackMojo extends AbstractMojo {
     File classesdir = new File(project.getBuild().getDirectory()
         + File.separator + "classes");
     FileUtils.copyDirectory(classesdir, rootDir);
-    List<File> dependencies = this.getScopedDependencies("compile");
-    List<File> filteredDependencies = this.filterDependencies(dependencies);
+    Set<Artifact> filteredArtifacts = this.filterArtifacts(this.artifacts);
     getLog().info("");
     getLog().info(
         "Dependencies of this project independent of hadoop classpath "
-            + filteredDependencies);
+            + filteredArtifacts);
     getLog().info("");
-    for (File dependency : filteredDependencies) {
-      FileUtils.copyFileToDirectory(dependency, jarlibdir);
+    for (Artifact artifact : filteredArtifacts) {
+      FileUtils.copyFileToDirectory(artifact.getFile(), jarlibdir);
     }
     return rootDir;
   }
@@ -181,15 +187,20 @@ public class PackMojo extends AbstractMojo {
    * @param dependencies
    * @return
    */
-  private List<File> filterDependencies(List<File> dependencies) {
-    List<String> hadoopDependencies = getHadoopDependencies();
-    List<File> output = new ArrayList<File>();
-    for (final File inputDependency : dependencies) {
-      final String name = inputDependency.getName();
-      if (name.startsWith("hadoop") || hadoopDependencies.contains(name)) {
+  private Set<Artifact> filterArtifacts(Set<Artifact> artifacts) {
+    List<String> hadoopArtifactIds = getHadoopArtifactIds();
+    getLog().info("Hadoop Artifact Ids  are " + hadoopArtifactIds);
+    Set<Artifact> output = new HashSet<Artifact>();
+    for (final Artifact inputArtifact : artifacts) {
+      final String name = inputArtifact.getArtifactId();
+      if (name.startsWith("hadoop") || name.startsWith("jsp-")
+          || hadoopArtifactIds.contains(name)) {
+        getLog().info(
+            "Ignoring " + inputArtifact
+                + " because of that being a hadoop dependency ");
         continue; // skip other dependencies in hadoop cp as well.
       } else {
-        output.add(inputDependency);
+        output.add(inputArtifact);
       }
     }
     return output;
@@ -197,19 +208,22 @@ public class PackMojo extends AbstractMojo {
   }
 
   /**
-   * Retrieve the list of hadoop dependencies since we want to perform a set
-   * operation of A - B before packing our jar.
+   * Retrieve the list of hadoop dependencies (artifactIds) since we want to
+   * perform a set operation of A - B before packing our jar.
    * 
    * @return
    */
-  private List<String> getHadoopDependencies() {
+  private List<String> getHadoopArtifactIds() {
     File hadoopLib = new File(this.hadoopHome.getAbsoluteFile()
         + File.separator + "lib");
     Collection<File> hadoopDependencies = FileUtils.listFiles(hadoopLib,
         new String[] { "jar" }, true);
     List<String> outputJars = new ArrayList<String>();
     for (final File hadoopDependency : hadoopDependencies) {
-      outputJars.add(hadoopDependency.getName());
+      int groupId = hadoopDependency.getName().lastIndexOf('-');
+      if (groupId != -1) {
+        outputJars.add(hadoopDependency.getName().substring(0, groupId));
+      }
     }
     return outputJars;
   }
