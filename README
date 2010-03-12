@@ -20,7 +20,7 @@ The plugin should be available in the central repository soon.
 <plugin> 
       <groupId>com.github.maven-hadoop.plugin</groupId>
       <artifactId>maven-hadoop-plugin</artifactId>
-       <version>0.20.0</version>
+       <version>0.20.1</version>
        <configuration>
            <hadoopHome>/opt/software/hadoop</hadoopHome>
        </configuration>
