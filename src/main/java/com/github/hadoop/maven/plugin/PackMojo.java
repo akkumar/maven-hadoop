@@ -213,7 +213,7 @@ public class PackMojo extends AbstractMojo {
    * 
    * @return
    */
-  private List<String> getHadoopArtifactIds() {
+  List<String> getHadoopArtifactIds() {
     File hadoopLib = new File(this.hadoopHome.getAbsoluteFile()
         + File.separator + "lib");
     Collection<File> hadoopDependencies = FileUtils.listFiles(hadoopLib,
