@@ -185,7 +185,9 @@ public class PackMojo extends AbstractMojo {
     Set<Artifact> output = new HashSet<Artifact>();
     for (final Artifact inputArtifact : artifacts) {
       final String name = inputArtifact.getArtifactId();
-      if (name.startsWith("hadoop") || name.startsWith("jsp-")
+      final String group = inputArtifact.getGroupId();
+      if (group.startsWith("org.apache") && name.startsWith("hadoop") 
+          || name.startsWith("jsp-")
           || hadoopArtifactIds.contains(name)) {
         getLog().info(
             "Ignoring " + inputArtifact
