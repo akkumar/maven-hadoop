@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -94,13 +93,6 @@ public class PackMojo extends AbstractMojo {
    * @readonly
    */
   protected MavenProject project;
-
-  /**
-   * Hadoop Configuration properties
-   * 
-   * @parameter
-   */
-  private Properties hadoopConfiguration;
 
   /**
    * @parameter expression="${project.build.directory}/hadoop-deploy"
@@ -226,30 +218,6 @@ public class PackMojo extends AbstractMojo {
       }
     }
     return outputJars;
-  }
-
-  /**
-   * Retrieve the project dependencies.
-   * 
-   * @param scope
-   *          Scope of the dependency to resolve to .
-   * @return
-   */
-  @SuppressWarnings("unchecked")
-  private List<File> getScopedDependencies(final String scope) {
-    List<File> jarDependencies = new ArrayList<File>();
-    final Set<Artifact> artifacts = project.getDependencyArtifacts();
-    for (Artifact artifact : artifacts) {
-      if ("jar".equals(artifact.getType())) {
-        File file = artifact.getFile();
-        if (file != null && file.exists()) {
-          jarDependencies.add(file);
-        } else {
-          getLog().warn("Dependency file not found: " + artifact);
-        }
-      }
-    }
-    return jarDependencies;
   }
 
   private File packToJar(final File jarRootDir) throws FileNotFoundException,
