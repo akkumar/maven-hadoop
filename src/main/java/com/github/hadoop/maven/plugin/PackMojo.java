@@ -181,18 +181,22 @@ public class PackMojo extends AbstractMojo {
    */
   private Set<Artifact> filterArtifacts(Set<Artifact> artifacts) {
     List<String> hadoopArtifactIds = getHadoopArtifactIds();
-    getLog().info("Hadoop Artifact Ids  are " + hadoopArtifactIds);
+    getLog().info("Hadoop Artifact Ids are " + hadoopArtifactIds);
     Set<Artifact> output = new HashSet<Artifact>();
     for (final Artifact inputArtifact : artifacts) {
       final String name = inputArtifact.getArtifactId();
       final String group = inputArtifact.getGroupId();
-      if (group.startsWith("org.apache") && name.startsWith("hadoop") 
-          || name.startsWith("jsp-")
-          || hadoopArtifactIds.contains(name)) {
-        getLog().info(
-            "Ignoring " + inputArtifact
-                + " because of that being a hadoop dependency ");
-        continue; // skip other dependencies in hadoop cp as well.
+      if (hadoopArtifactIds.contains(name)) {
+        getLog().info("Ignoring " + inputArtifact 
+            + " (it is a hadoop dependency)");
+      }
+      else if (group.startsWith("org.apache") && name.startsWith("hadoop")) {
+        getLog().info("Ignoring " + inputArtifact 
+            + " (`it is in 'org.apache' and starts with 'hadoop')");
+      }
+      else if (name.startsWith("jsp-")) {
+        getLog().info("Ignoring " + inputArtifact 
+            + " (it starts with 'jsp-')");
       } else {
         output.add(inputArtifact);
       }
