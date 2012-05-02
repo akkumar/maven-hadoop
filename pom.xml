@@ -18,6 +18,7 @@
     </license>
   </licenses>
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mvn.plugin.version>2.0.9</mvn.plugin.version>
     <git.url>http://github.com/akkumar/maven-hadoop.git</git.url>
   </properties>
