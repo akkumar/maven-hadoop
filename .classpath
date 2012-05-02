@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="target/dependency/commons-io-1.4.jar"/>
-	<classpathentry kind="lib" path="target/dependency/maven-artifact-2.0.9.jar"/>
-	<classpathentry kind="lib" path="target/dependency/maven-model-2.0.9.jar"/>
-	<classpathentry kind="lib" path="target/dependency/maven-plugin-api-2.0.9.jar"/>
-	<classpathentry kind="lib" path="target/dependency/maven-project-2.0.9.jar"/>
-	<classpathentry kind="output" path="bin"/>
+  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-plugin-api/2.0.9/maven-plugin-api-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-artifact/2.0.9/maven-artifact-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/plexus/plexus-utils/1.5.1/plexus-utils-1.5.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-project/2.0.9/maven-project-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-settings/2.0.9/maven-settings-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-model/2.0.9/maven-model-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-profile/2.0.9/maven-profile-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-artifact-manager/2.0.9/maven-artifact-manager-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-repository-metadata/2.0.9/maven-repository-metadata-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/wagon/wagon-provider-api/1.0-beta-2/wagon-provider-api-1.0-beta-2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-plugin-registry/2.0.9/maven-plugin-registry-2.0.9.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.3/commons-io-2.3.jar"/>
 </classpath>
