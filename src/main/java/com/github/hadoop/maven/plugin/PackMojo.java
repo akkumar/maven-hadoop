@@ -192,7 +192,7 @@ public class PackMojo extends AbstractMojo {
       }
       else if (group.startsWith("org.apache") && name.startsWith("hadoop")) {
         getLog().info("Ignoring " + inputArtifact 
-            + " (`it is in 'org.apache' and starts with 'hadoop')");
+            + " (it is in 'org.apache' and starts with 'hadoop')");
       }
       else if (name.startsWith("jsp-")) {
         getLog().info("Ignoring " + inputArtifact 
