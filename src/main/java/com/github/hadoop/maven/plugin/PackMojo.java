@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -94,13 +93,6 @@ public class PackMojo extends AbstractMojo {
    * @readonly
    */
   protected MavenProject project;
-
-  /**
-   * Hadoop Configuration properties
-   * 
-   * @parameter
-   */
-  private Properties hadoopConfiguration;
 
   /**
    * @parameter expression="${project.build.directory}/hadoop-deploy"
@@ -189,16 +181,22 @@ public class PackMojo extends AbstractMojo {
    */
   private Set<Artifact> filterArtifacts(Set<Artifact> artifacts) {
     List<String> hadoopArtifactIds = getHadoopArtifactIds();
-    getLog().info("Hadoop Artifact Ids  are " + hadoopArtifactIds);
+    getLog().info("Hadoop Artifact Ids are " + hadoopArtifactIds);
     Set<Artifact> output = new HashSet<Artifact>();
     for (final Artifact inputArtifact : artifacts) {
       final String name = inputArtifact.getArtifactId();
-      if (name.startsWith("hadoop") || name.startsWith("jsp-")
-          || hadoopArtifactIds.contains(name)) {
-        getLog().info(
-            "Ignoring " + inputArtifact
-                + " because of that being a hadoop dependency ");
-        continue; // skip other dependencies in hadoop cp as well.
+      final String group = inputArtifact.getGroupId();
+      if (hadoopArtifactIds.contains(name)) {
+        getLog().info("Ignoring " + inputArtifact 
+            + " (it is a hadoop dependency)");
+      }
+      else if (group.startsWith("org.apache") && name.startsWith("hadoop")) {
+        getLog().info("Ignoring " + inputArtifact 
+            + " (it is in 'org.apache' and starts with 'hadoop')");
+      }
+      else if (name.startsWith("jsp-")) {
+        getLog().info("Ignoring " + inputArtifact 
+            + " (it starts with 'jsp-')");
       } else {
         output.add(inputArtifact);
       }
@@ -226,30 +224,6 @@ public class PackMojo extends AbstractMojo {
       }
     }
     return outputJars;
-  }
-
-  /**
-   * Retrieve the project dependencies.
-   * 
-   * @param scope
-   *          Scope of the dependency to resolve to .
-   * @return
-   */
-  @SuppressWarnings("unchecked")
-  private List<File> getScopedDependencies(final String scope) {
-    List<File> jarDependencies = new ArrayList<File>();
-    final Set<Artifact> artifacts = project.getDependencyArtifacts();
-    for (Artifact artifact : artifacts) {
-      if ("jar".equals(artifact.getType())) {
-        File file = artifact.getFile();
-        if (file != null && file.exists()) {
-          jarDependencies.add(file);
-        } else {
-          getLog().warn("Dependency file not found: " + artifact);
-        }
-      }
-    }
-    return jarDependencies;
   }
 
   private File packToJar(final File jarRootDir) throws FileNotFoundException,
