@@ -120,7 +120,7 @@
     <repository>
       <id>sonatype-nexus-staging</id>
       <name>Nexus Staging Repository</name>
-      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
     </repository>
   </distributionManagement>
 
